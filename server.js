@@ -17,8 +17,6 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 const express = require('express');
 const path = require('path');
 const notesData = require('db.json');
-const notesContainer = document.querySelector("list-container");
-const saveButton = document.querySelector("save-note");
 
 const PORT = 3001;
 
@@ -51,31 +49,3 @@ app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
   );
 
- // Get a list of existing notes from the server
-const getNotes = () =>
-fetch('api/notes', {
-  method: 'GET', // or 'PUT'
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  // body: JSON.stringify(data),
-})
-  .then((response) => response.json())
-  .then((data) => data)
-  .catch((error) => {
-    console.error('Error:', error);
-  }); 
-  
-  saveButton.addEventListener('click', (e) => {
-      e.preventDefault();
-  });
-
-  const createCard = (note) => {
-      const noteCard = document.createElement('div');
-      const noteCardHeader = document.createElement('h4');
-      const noteCardBody = document.createElement('div');
-      noteCard.appendChild(noteCardHeader);
-      noteCard.appendChild(noteCardBody);
-      notesContainer.appendChild(noteCard);
-
-  };
