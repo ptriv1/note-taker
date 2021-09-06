@@ -48,4 +48,19 @@ app.post('/api/notes', (req, res) => {
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
   );
+
+ // Get a list of existing notes from the server
+const getNotes = () =>
+fetch('api/notes', {
+  method: 'GET', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  // body: JSON.stringify(data),
+})
+  .then((response) => response.json())
+  .then((data) => data)
+  .catch((error) => {
+    console.error('Error:', error);
+  }); 
   
