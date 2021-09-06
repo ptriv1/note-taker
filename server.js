@@ -17,6 +17,8 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 const express = require('express');
 const path = require('path');
 const notesData = require('db.json');
+const notesContainer = document.querySelector("list-container");
+const saveButton = document.querySelector("save-note");
 
 const PORT = 3001;
 
@@ -64,3 +66,16 @@ fetch('api/notes', {
     console.error('Error:', error);
   }); 
   
+  saveButton.addEventListener('click', (e) => {
+      e.preventDefault();
+  });
+
+  const createCard = (note) => {
+      const noteCard = document.createElement('div');
+      const noteCardHeader = document.createElement('h4');
+      const noteCardBody = document.createElement('div');
+      noteCard.appendChild(noteCardHeader);
+      noteCard.appendChild(noteCardBody);
+      notesContainer.appendChild(noteCard);
+
+  };
