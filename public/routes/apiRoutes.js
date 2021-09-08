@@ -1,64 +1,31 @@
-const notes = require('express').Router();
-const { v4: uuidv4 } = require('uuid');
-const {
-  readFromFile,
-  readAndAppend,
-  writeToFile,
-} = require('../helpers/fsUtils');
+/*
+GET /api/notes` should read the `db.json` file and return all saved notes as JSON.
 
-// GET Route for retrieving all the tips
-notes.get('/', (req, res) => {
-  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
-});
+POST /api/notes` should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client. You'll need to find a way to give each note a unique id when it's saved (look into npm packages that could do this for you).
+*/
 
-// GET Route for a specific tip
-notes.get('/:note_id', (req, res) => {
-  const noteId = req.params.note_id;
-  readFromFile('./db/db.json')
-    .then((data) => JSON.parse(data))
-    .then((json) => {
-      const result = json.filter((note) => note.note_id === noteId);
-      return result.length > 0
-        ? res.json(result)
-        : res.json('No note with that ID');
-    });
-});
+const express = require('express.js');
+const fs = require('fs');
+const util = require('util');
+const router = express.Router();
 
-// DELETE Route for a specific tip
-notes.delete('/:note_id', (req, res) => {
-  const noteId = req.params.note_id;
-  readFromFile('./db/db.json')
-    .then((data) => JSON.parse(data))
-    .then((json) => {
-      // Make a new array of all tips except the one with the ID provided in the URL
-      const result = json.filter((tip) => note.note_id !== noteId);
+const readFromFile = util.promisify(fs.readFile);
 
-      // Save that array to the filesystem
-      writeToFile('./db/notes.json', result);
+const writeToFile = (destination, content) =>
+  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${destination}`)
+  );
 
-      // Respond to the DELETE request
-      res.json(`Item ${noteId} has been deleted`);
-    });
-});
+const readAndAppend = (content, file) => {
+  fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const parsedData = JSON.parse(data);
+      parsedData.push(content);
+      writeToFile(file, parsedData);
+    }
+  });
+};
 
-// POST Route for a new UX/UI tip
-notes.post('/', (req, res) => {
-  console.log(req.body);
-
-  const { title, note } = req.body;
-
-  if (req.body) {
-    const newNote = {
-      title,
-      note,
-      noteId: uuidv4(),
-    };
-
-    readAndAppend(newNote, './db/db.json');
-    res.json(`Note added`); 
-  } else {
-    res.error('Unsuccessful in adding'); 
-  }
-});
-
-module.exports = notes;
+module.exports = router;

@@ -25,26 +25,7 @@ const app = express();
 express.static(root, [options]);
 app.use(express.static('public'));
 
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'notes.html'));
-  });
 
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-})
-
-// Read db.json file and return saved notes as JSON
-app.get('/api/notes', (req, res) => {
-    res.json({
-        term: 'api'
-    });
-});
-
-// Receive new note to save on request body, add it in db.json file, return new note to client  unique IDs
-app.post('/api/notes', (req, res) => {
-
-})
-  
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
   );
