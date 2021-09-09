@@ -17,11 +17,15 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 const express = require('express');
 const path = require('path');
 const notesData = require('./db/db.json');
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
+app.use('/api', apiroutes);
+app.use('/api', htmlroutes);
+
+app.get('/api', (req, res) => res.json(notesData));
 
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)

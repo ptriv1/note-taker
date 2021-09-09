@@ -28,4 +28,8 @@ const readAndAppend = (content, file) => {
   });
 };
 
+app.get('/api/notes', (req, res) => {
+
+});
+
 module.exports = router;
