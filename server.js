@@ -15,6 +15,8 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 */
 
 const express = require('express');
+const apiroutes = require('./routes/apiroutes');
+const htmlroutes = require('./routes/htmlroutes');
 const path = require('path');
 const notesData = require('./db/db.json');
 const PORT = process.env.PORT || 3001;
