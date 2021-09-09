@@ -16,15 +16,12 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 
 const express = require('express');
 const path = require('path');
-const notesData = require('db.json');
-
+const notesData = require('./db/db.json');
 const PORT = 3001;
 
 const app = express();
 
-express.static(root, [options]);
-app.use(express.static('public'));
-
+app.use(express.static(__dirname + '/public'));
 
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
