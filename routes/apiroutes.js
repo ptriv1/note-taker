@@ -6,9 +6,11 @@ POST /api/notes` should receive a new note to save on the request body, add it t
 
 const express = require('express');
 const fs = require('fs');
+const notes = require('express').Router();
 const util = require('util');
 const router = express.Router();
 const app = express();
+const { v4: uuidv4 } = require('uuid');
 
 const readFromFile = util.promisify(fs.readFile);
 
@@ -29,8 +31,35 @@ const readAndAppend = (content, file) => {
   });
 };
 
-app.get('/api/notes', (req, res) => {
-
+notes.get('/:note_id', (req, res) => {
+  const noteId = req.params.note_id;
+  readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((json) => {
+      const result = json.filter((note) => note.note_id === noteId);
+      return result.length > 0
+      ? res.json(result)
+      : res.json('No note with that ID');
+    });
 });
 
-module.exports = router;
+notes.post('/', (req, res) => {
+  console.log(req.body);
+
+  const { title, note } = req.body;
+
+  if (req.body) {
+    const newNote = {
+      title, note, note_id: uuidv4(),
+    };
+
+    readAndAppend(newNote, './db/db.json');
+    res.json('Note added successfully');
+  } else {
+    res.error('Error in adding note');
+  }
+});
+
+
+
+module.exports = notes;

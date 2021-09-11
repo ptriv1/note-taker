@@ -25,7 +25,7 @@ const app = express();
 
 app.use(express.static(__dirname + '/public'));
 app.use('/api', apiroutes);
-app.use('/api', htmlroutes);
+app.use('/', htmlroutes);
 
 app.get('/api', (req, res) => res.json(notesData));
 
