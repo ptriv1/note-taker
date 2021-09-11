@@ -9,7 +9,7 @@ router.get('/notes', function(req, res) {
 });
 
 router.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, '/public/index.html'))
+    res.sendFile(path.join(__dirname, '../public/index.html'))
 });
 
 const readFromFile = util.promisify(fs.readFile);
