@@ -43,7 +43,7 @@ notes.get('/:note_id', (req, res) => {
     });
 });
 
-notes.post('/', (req, res) => {
+notes.post('/notes', (req, res) => {
   console.log(req.body);
 
   const { title, note } = req.body;
