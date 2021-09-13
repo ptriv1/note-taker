@@ -31,6 +31,10 @@ const readAndAppend = (content, file) => {
   });
 };
 
+notes.get('/notes', (req, res) => {
+  res.json('here')
+});
+
 notes.get('/:note_id', (req, res) => {
   const noteId = req.params.note_id;
   readFromFile('./db/db.json')
@@ -66,8 +70,6 @@ function getNotes() {
   });
 }
 
-notes.get('/notes', (req, res) => {
-    getNotes();
-});
+
 
 module.exports = notes;
