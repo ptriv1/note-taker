@@ -60,17 +60,14 @@ notes.post('/', (req, res) => {
   }
 });
 
-getNotes() {
+function getNotes() {
   notes.get('/notes', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data))); 
   });
 }
 
 notes.get('/notes', (req, res) => {
-  getNotes();
-  .then((notes) => {
-    return res.json(notes);
-  })
+    getNotes();
 });
 
 module.exports = notes;
