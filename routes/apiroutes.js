@@ -1,37 +1,4 @@
 /*
-TODO:
-Step One:
-Write your route.  I'd advise testing the route alone before adding code to it.  When you have written the route properly you will see the console log in your terminal.  
-
-notes.get('/notes', (req, res) => {
-  console.log('it works!')
-});
-
-Step Two:
-Write getNotes() function
-
-getNotes() {
-   // getNotes will do the following 2 things
-   // 1 - read db json file: for this use `readFileAsync` : learn more here - https://www.geeksforgeeks.org/node-js-fs-readfile-method/
-   // 2 - return the promise for your notes so that other functions can call .then from getNotes() 
-}
-
-Step Three:
-Update your route to return the actual notes.
-notes.get('/notes', (req, res) => {
-  // call the getNotes() function you wrote
-  // parse it as JSON
-  // send as a response
-
-  // as a reminder, these functions are async and so you should use either async/await or .then
-  .then((notes) => {
-    return res.json(notes);
-  })
-});
-(edited)
-
-
-
 GET /api/notes` should read the `db.json` file and return all saved notes as JSON.
 
 POST /api/notes` should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client. You'll need to find a way to give each note a unique id when it's saved (look into npm packages that could do this for you).
@@ -64,10 +31,6 @@ const readAndAppend = (content, file) => {
   });
 };
 
-notes.get('/notes', (req, res) => {
-  console.log('it works!')
-});
-
 notes.get('/:note_id', (req, res) => {
   const noteId = req.params.note_id;
   readFromFile('./db/db.json')
@@ -97,6 +60,17 @@ notes.post('/', (req, res) => {
   }
 });
 
+getNotes() {
+  notes.get('/notes', (req, res) => {
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data))); 
+  });
+}
 
+notes.get('/notes', (req, res) => {
+  getNotes();
+  .then((notes) => {
+    return res.json(notes);
+  })
+});
 
 module.exports = notes;
